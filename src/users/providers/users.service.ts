@@ -22,15 +22,12 @@ export class UsersService {
     }
 
     public findOneById(
-        id: number
+        id: string
     ) {
-        console.log(id);
-        return [
-            {
-                id: 123,
-                firstName: "Abraam",
-                email: 'abraam@gmail.com'
-            }
-        ]
+        return {
+            id: 123,
+            firstName: "Abraam",
+            email: 'abraam@gmail.com'
+        }
     }
 }
