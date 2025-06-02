@@ -20,11 +20,22 @@ import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
 import { ApiTags, ApiQuery, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+/**
+ * Users controller
+ * Handles all user related operations
+ */
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  /**
+   * Returns an array of registered users or a specific user
+   * @param getUserParamDto 
+   * @param limit 
+   * @param page 
+   * @returns 
+   */
   @Get('/:id?')
   @ApiOperation({
     summary: 'Returns an array of registered users or a specific user',
@@ -55,11 +66,21 @@ export class UsersController {
     return this.usersService.findAll(getUserParamDto, limit, page);
   }
 
+  /**
+   * Creates a new user
+   * @param createUserDto 
+   * @returns 
+   */
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
     return createUserDto;
   }
 
+  /**
+   * Updates a user
+   * @param patchUserDto 
+   * @returns 
+   */
   @Patch()
   public patchUser(@Body() patchUserDto: PatchUserDto) {
     return patchUserDto;
