@@ -5,29 +5,29 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PostsService {
-    constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
-    public findAll(userId: string) {
-        const user = this.usersService.findOneById(userId);
-        return [
-            {
-                user,
-                title: "test title",
-                content: "test content"
-            },
-            {
-                user,
-                title: "test title 2",
-                content: "test content 2"
-            }
-        ]
-    }
+  public findAll(userId: string) {
+    const user = this.usersService.findOneById(userId);
+    return [
+      {
+        user,
+        title: 'test title',
+        content: 'test content',
+      },
+      {
+        user,
+        title: 'test title 2',
+        content: 'test content 2',
+      },
+    ];
+  }
 
-    public createPost(createPostDto: CreatePostDto) {
-        return createPostDto;
-    }
+  public createPost(createPostDto: CreatePostDto) {
+    return createPostDto;
+  }
 
-    public patchPost(id: number, patchPostDto: PatchPostDto) {
-        return patchPostDto;
-    }
+  public patchPost(id: number, patchPostDto: PatchPostDto) {
+    return patchPostDto;
+  }
 }

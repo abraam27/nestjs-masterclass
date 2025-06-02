@@ -29,7 +29,8 @@ export class CreatePostDto {
 
   @ApiProperty({
     enum: PostType,
-    description: 'The type of the post and options are: post, page, story, series',
+    description:
+      'The type of the post and options are: post, page, story, series',
     example: 'post',
   })
   @IsNotEmpty()
@@ -50,7 +51,8 @@ export class CreatePostDto {
 
   @ApiProperty({
     enum: PostStatus,
-    description: 'The status of the post and options are: draft, scheduled, review, published',
+    description:
+      'The status of the post and options are: draft, scheduled, review, published',
     example: 'draft',
   })
   @IsString()
@@ -108,8 +110,16 @@ export class CreatePostDto {
     items: {
       type: 'object',
       properties: {
-        key: { type: 'string' , description: 'The key of the meta option', example: 'sidebarEnabled' },
-        value: { type: 'any' , description: 'The value of the meta option', example: true },
+        key: {
+          type: 'string',
+          description: 'The key of the meta option',
+          example: 'sidebarEnabled',
+        },
+        value: {
+          type: 'any',
+          description: 'The value of the meta option',
+          example: true,
+        },
       },
     },
     description: 'The meta options of the post',
