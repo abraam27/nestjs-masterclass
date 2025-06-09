@@ -1,6 +1,10 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { GetUserParamDto } from '../dtos/get-user-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
+import { Repository } from 'typeorm';
+import { User } from '../user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from '../dtos/create-user.dto';
 
 /**
  * Users service
@@ -15,6 +19,8 @@ export class UsersService {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authServices: AuthService,
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
   ) {}
 
   /**
@@ -22,7 +28,7 @@ export class UsersService {
    * @param getUserParamDto
    * @param limit
    * @param page
-   * @returns
+   * @returns array of registered users or a specific user
    */
   public findAll(
     getUserParamDto: GetUserParamDto,
@@ -45,7 +51,7 @@ export class UsersService {
   /**
    * Returns a specific user
    * @param id
-   * @returns
+   * @returns specific user
    */
   public findOneById(id: string) {
     return {
@@ -53,5 +59,22 @@ export class UsersService {
       firstName: 'Abraam',
       email: 'abraam@gmail.com',
     };
+  }
+
+  /**
+   * Creates a new user
+   * @param createUserDto
+   * @returns created user
+   */
+  public async createUser(createUserDto: CreateUserDto) {
+    const existUser = await this.usersRepository.findOne({
+      where: { email: createUserDto.email },
+    });
+    if (existUser) {
+      throw new Error('User already exists');
+    }
+    let createUser = this.usersRepository.create(createUserDto);
+    createUser = await this.usersRepository.save(createUser);
+    return createUser;
   }
 }

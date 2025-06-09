@@ -69,11 +69,11 @@ export class UsersController {
   /**
    * Creates a new user
    * @param createUserDto 
-   * @returns 
+   * @returns created user
    */
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
-    return createUserDto;
+    return this.usersService.createUser(createUserDto);
   }
 
   /**
