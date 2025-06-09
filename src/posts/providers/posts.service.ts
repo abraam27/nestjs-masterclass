@@ -29,4 +29,14 @@ export class PostsService {
   public patchPost(id: number, patchPostDto: PatchPostDto) {
     return patchPostDto;
   }
+
+  public async deletePost(id: number) {
+    const post = await this.postsRepository.findOneBy({ id });
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    await this.postsRepository.delete(id);
+    await this.metaOptionsRepository.delete(post.metaOptions.id);
+    return { deleted: true, id };
+  }
 }
