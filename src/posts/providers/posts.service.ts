@@ -18,19 +18,7 @@ export class PostsService {
   ) {}
 
   public findAll(userId: string) {
-    const user = this.usersService.findOneById(userId);
-    return [
-      {
-        user,
-        title: 'test title',
-        content: 'test content',
-      },
-      {
-        user,
-        title: 'test title 2',
-        content: 'test content 2',
-      },
-    ];
+    return this.postsRepository.find();
   }
 
   public async createPost(createPostDto: CreatePostDto) {

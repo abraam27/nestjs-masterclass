@@ -76,7 +76,8 @@ export class Post {
   // we will use array of objects for meta options
   @OneToOne(() => MetaOption, {
     cascade: true,
-} )
+    eager: true,
+  })
   @JoinColumn()
   metaOptions: MetaOption;
 }
