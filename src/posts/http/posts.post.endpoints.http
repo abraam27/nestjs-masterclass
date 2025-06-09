@@ -4,14 +4,14 @@ Content-Type: application/json
 {
     "title": "test title",
     "postType": "post",
-    "slug": "test-slug-1",
+    "slug": "test-slug-2",
     "status": "draft",
     "content": "test content",
     "schema": "{\r\n    \"@context\": \"https:\/\/schema.org\",\r\n    \"@type\": \"Person\"\r\n  }",
     "featuredImageUrl": "https://example.com/image.jpg",
     "publishedOn": "2022-01-01T00:00:00.000Z",
-    "tags": ["test tag 1", "test tag 2"]
-    // "metaOptions": {
-    //     "metaValue": "{\"sidebarEnabled\": true, \"sidebarPosition\": \"right\"}"
-    // }
+    "tags": ["test tag 1", "test tag 2"],
+    "metaOptions": {
+        "metaValue": "{\"sidebarEnabled\": true, \"sidebarPosition\": \"right\"}"
+    }
 }
