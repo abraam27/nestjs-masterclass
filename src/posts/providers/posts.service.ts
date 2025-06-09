@@ -31,9 +31,9 @@ export class PostsService {
   }
 
   public async createPost(createPostDto: CreatePostDto) {
-    let createPost = this.postsRepository.create(createPostDto);
-    createPost = await this.postsRepository.save(createPost);
-    return createPost;
+    // let createPost = this.postsRepository.create(createPostDto);
+    // createPost = await this.postsRepository.save(createPost);
+    // return createPost;
   }
 
   public patchPost(id: number, patchPostDto: PatchPostDto) {

@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { PostType } from './enums/postType.enum';
 import { PostStatus } from './enums/postStatus.enum';
+import { MetaOption } from 'src/meta-options/meta-options.entity';
 
 @Entity()
 export class Post {
@@ -67,7 +68,9 @@ export class Post {
     // tags: string[];
 
     // we will use array of objects for meta options
-    // metaOptions: any[];
+    @OneToOne(() => MetaOption)
+    @JoinColumn()
+    metaOptions: MetaOption;
 
     @Column({
         type: 'varchar',
