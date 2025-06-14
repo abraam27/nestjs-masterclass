@@ -10,6 +10,7 @@ import { PostType } from './enums/postType.enum';
 import { PostStatus } from './enums/postStatus.enum';
 import { MetaOption } from 'src/meta-options/meta-options.entity';
 import { User } from 'src/users/user.entity';
+import e from 'express';
 
 @Entity()
 export class Post {
@@ -82,6 +83,8 @@ export class Post {
   })
   metaOptions: MetaOption;
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, {
+    eager: true,
+  })
   author: User;
 }

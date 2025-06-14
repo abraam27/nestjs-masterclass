@@ -17,7 +17,7 @@ export class PostsService {
     private readonly metaOptionsRepository: Repository<MetaOption>,
   ) {}
 
-  public findAll(userId: string) {
+  public findAll() {
     return this.postsRepository.find();
   }
 
