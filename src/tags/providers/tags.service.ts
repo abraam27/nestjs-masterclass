@@ -23,4 +23,14 @@ export class TagsService {
     public async findOneByMultipleIds(ids: number[]) {
         return await this.tagsRepository.find({ where: { id: In(ids) } });
     }
+
+    public async deleteTag(id: number) {
+        await this.tagsRepository.delete(id);
+        return { deleted: true, id };
+    }
+
+    public async softDeleteTag(id: number) {
+        await this.tagsRepository.softDelete(id);
+        return { deleted: true, id };
+    }
 }

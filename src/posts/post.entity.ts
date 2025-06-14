@@ -76,7 +76,7 @@ export class Post {
   })
   publishedOn: Date;
 
-  @ManyToMany(() => Tag, {
+  @ManyToMany(() => Tag, (tag) => tag.posts, {
     cascade: true,
     eager: true,
   })

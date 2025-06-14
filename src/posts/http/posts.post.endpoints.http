@@ -4,7 +4,7 @@ Content-Type: application/json
 {
     "title": "test title",
     "postType": "post",
-    "slug": "test-slug-4",
+    "slug": "test-slug-5",
     "status": "draft",
     "content": "test content",
     "schema": "{\r\n    \"@context\": \"https:\/\/schema.org\",\r\n    \"@type\": \"Person\"\r\n  }",

@@ -2,8 +2,8 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-    "name": "test tag 2",
-    "slug": "test-slug-2",
+    "name": "test tag 22",
+    "slug": "test-slug-22",
     "description": "test description",
     "schema": "{\r\n    \"@context\": \"https:\/\/schema.org\",\r\n    \"@type\": \"Person\"\r\n  }",
     "featuredImageUrl": "https://example.com/image.jpg"
