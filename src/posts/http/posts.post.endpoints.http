@@ -13,5 +13,6 @@ Content-Type: application/json
     "tags": ["test tag 1", "test tag 2"],
     "metaOptions": {
         "metaValue": "{\"sidebarEnabled\": true, \"sidebarPosition\": \"right\"}"
-    }
+    },
+    "authorId": 1
 }
