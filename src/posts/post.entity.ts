@@ -2,6 +2,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -11,6 +13,7 @@ import { PostStatus } from './enums/postStatus.enum';
 import { MetaOption } from 'src/meta-options/meta-options.entity';
 import { User } from 'src/users/user.entity';
 import e from 'express';
+import { Tag } from 'src/tags/tag.entity';
 
 @Entity()
 export class Post {
@@ -73,8 +76,9 @@ export class Post {
   })
   publishedOn: Date;
 
-  // we will use array of strings for tags
-  // tags: string[];
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 
   // we will use array of objects for meta options
   @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
