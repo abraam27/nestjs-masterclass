@@ -74,7 +74,7 @@ export class Post {
   // tags: string[];
 
   // we will use array of objects for meta options
-  @OneToOne(() => MetaOption, {
+  @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
     cascade: true,
     eager: true,
   })

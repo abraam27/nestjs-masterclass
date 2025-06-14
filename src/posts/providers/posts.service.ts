@@ -35,8 +35,14 @@ export class PostsService {
     if (!post) {
       throw new Error('Post not found');
     }
-    await this.postsRepository.delete(id);
-    await this.metaOptionsRepository.delete(post.metaOptions.id);
+    console.log(post.metaOptions.id);
+    // await this.postsRepository.delete(id);
+    // await this.metaOptionsRepository.delete(post.metaOptions.id);
+    const reversePost = await this.metaOptionsRepository.find({
+      where: { id: post.metaOptions.id },
+      relations: { post: true },
+    });
+    console.log(reversePost);
     return { deleted: true, id };
   }
 }
