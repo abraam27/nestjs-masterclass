@@ -35,7 +35,7 @@ export class PostsController {
   })
   @Patch()
   updatePost(@Body() patchPostDto: PatchPostDto) {
-    return this.postsService.patchPost(patchPostDto.id, patchPostDto);
+    return this.postsService.patchPost(patchPostDto);
   }
 
   @ApiOperation({

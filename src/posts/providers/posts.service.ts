@@ -20,7 +20,9 @@ export class PostsService {
   ) {}
 
   public findAll() {
-    return this.postsRepository.find();
+    return this.postsRepository.find({
+      relations: ['author', 'tags', 'metaOptions'],
+    });
   }
 
   public async createPost(createPostDto: CreatePostDto) {
@@ -37,8 +39,27 @@ export class PostsService {
     return await this.postsRepository.save(post);
   }
 
-  public patchPost(id: number, patchPostDto: PatchPostDto) {
-    return patchPostDto;
+  public async patchPost(patchPostDto: PatchPostDto) {
+    const tags = await this.tagsService.findOneByMultipleIds(patchPostDto.tags);
+    if (!tags) {
+      throw new Error('Tags not found');
+    }
+    const post = await this.postsRepository.findOneBy({ id: patchPostDto.id });
+    if (!post) {
+      throw new Error('Post not found');
+    }
+
+    post.title = patchPostDto.title ?? post.title;
+    post.postType = patchPostDto.postType ?? post.postType;
+    post.status = patchPostDto.status ?? post.status;
+    post.content = patchPostDto.content ?? post.content;
+    post.slug = patchPostDto.slug ?? post.slug;
+    post.schema = patchPostDto.schema ?? post.schema;
+    post.featuredImageUrl = patchPostDto.featuredImageUrl ?? post.featuredImageUrl;
+    post.publishedOn = patchPostDto.publishedOn ?? post.publishedOn;
+
+    post.tags = tags;
+    return this.postsRepository.save(post);
   }
 
   public async deletePost(id: number) {

@@ -4,9 +4,7 @@ import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class PatchPostDto extends PartialType(
-  OmitType(CreatePostDto, ['slug'] as const),
-) {
+export class PatchPostDto extends PartialType(CreatePostDto) {
   @ApiProperty({
     description: 'The ID of the post to update',
     example: '1234',

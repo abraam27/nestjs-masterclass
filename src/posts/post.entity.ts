@@ -76,7 +76,10 @@ export class Post {
   })
   publishedOn: Date;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, {
+    cascade: true,
+    eager: true,
+  })
   @JoinTable()
   tags: Tag[];
 
