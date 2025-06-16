@@ -1,11 +1,12 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { GetUserParamDto } from '../dtos/get-user-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
 import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { ConfigService } from '@nestjs/config';
+import profileConfig from '../config/profile.config';
 
 /**
  * Users service
@@ -22,7 +23,8 @@ export class UsersService {
     private readonly authServices: AuthService,
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-    private readonly configService: ConfigService,
+    @Inject(profileConfig.KEY)
+    private readonly profileConfiguration: ConfigType<typeof profileConfig>,
   ) {}
 
   /**
@@ -37,7 +39,7 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
-    console.log(process.env.S3_BUCKET);
+    console.log(this.profileConfiguration.apiKey);
     console.log(this.authServices.isAuth());
     return [
       {
