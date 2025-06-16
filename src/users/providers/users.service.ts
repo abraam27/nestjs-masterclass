@@ -37,8 +37,7 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
-    const env = this.configService.get('S3_BUCKET');
-    console.log(env);
+    console.log(process.env.S3_BUCKET);
     console.log(this.authServices.isAuth());
     return [
       {

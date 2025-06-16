@@ -9,6 +9,7 @@ import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { ConfigModule } from '@nestjs/config';
 
+const env = process.env.NODE_ENV;
 @Module({
   imports: [
     UsersModule,
@@ -16,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: !env ? `.env` : `.env.${env}`,
     }),
     TypeOrmModule.forRootAsync({
       imports: [],
