@@ -1,12 +1,18 @@
 import { CreatePostDto } from '../dtos/create-post.dto';
 import { PatchPostDto } from '../dtos/patch-post.dto';
 import { UsersService } from './../../users/providers/users.service';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { MetaOption } from 'src/meta-options/meta-options.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class PostsService {
@@ -26,10 +32,12 @@ export class PostsService {
   }
 
   public async createPost(createPostDto: CreatePostDto) {
-    const tags = await this.tagsService.findOneByMultipleIds(createPostDto.tags);
+    const tags = await this.tagsService.findOneByMultipleIds(
+      createPostDto.tags,
+    );
     const user = await this.usersService.findOneById(createPostDto.authorId);
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
     let post = this.postsRepository.create({
       ...createPostDto,
@@ -40,26 +48,43 @@ export class PostsService {
   }
 
   public async patchPost(patchPostDto: PatchPostDto) {
-    const tags = await this.tagsService.findOneByMultipleIds(patchPostDto.tags);
-    if (!tags) {
-      throw new Error('Tags not found');
-    }
-    const post = await this.postsRepository.findOneBy({ id: patchPostDto.id });
-    if (!post) {
-      throw new Error('Post not found');
-    }
+    let tags = undefined;
+    let post = undefined;
+    try {
+      tags = await this.tagsService.findOneByMultipleIds(patchPostDto.tags);
+      if (!tags || tags.length != patchPostDto.tags.length) {
+        throw new BadRequestException(
+          'Please check your tags Ids and insure they are correct',
+        );
+      }
 
-    post.title = patchPostDto.title ?? post.title;
-    post.postType = patchPostDto.postType ?? post.postType;
-    post.status = patchPostDto.status ?? post.status;
-    post.content = patchPostDto.content ?? post.content;
-    post.slug = patchPostDto.slug ?? post.slug;
-    post.schema = patchPostDto.schema ?? post.schema;
-    post.featuredImageUrl = patchPostDto.featuredImageUrl ?? post.featuredImageUrl;
-    post.publishedOn = patchPostDto.publishedOn ?? post.publishedOn;
+      post = await this.postsRepository.findOneBy({
+        id: patchPostDto.id,
+      });
+      if (!post) {
+        throw new NotFoundException('Post not found');
+      }
 
-    post.tags = tags;
-    return this.postsRepository.save(post);
+      post.title = patchPostDto.title ?? post.title;
+      post.postType = patchPostDto.postType ?? post.postType;
+      post.status = patchPostDto.status ?? post.status;
+      post.content = patchPostDto.content ?? post.content;
+      post.slug = patchPostDto.slug ?? post.slug;
+      post.schema = patchPostDto.schema ?? post.schema;
+      post.featuredImageUrl =
+        patchPostDto.featuredImageUrl ?? post.featuredImageUrl;
+      post.publishedOn = patchPostDto.publishedOn ?? post.publishedOn;
+      post.tags = tags;
+
+      return this.postsRepository.save(post);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to process your request at this moment',
+        {
+          description: 'Error Connecting to the database',
+        },
+      );
+    }
   }
 
   public async deletePost(id: number) {
