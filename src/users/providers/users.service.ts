@@ -1,4 +1,4 @@
-import { BadRequestException, forwardRef, Inject, Injectable, RequestTimeoutException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { GetUserParamDto } from '../dtos/get-user-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
@@ -59,7 +59,18 @@ export class UsersService {
    * @returns specific user
    */
   public findOneById(id: number) {
-    return this.usersRepository.findOneBy({ id });
+    let user = undefined; 
+    try {
+      user = this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw new RequestTimeoutException('Unable to process your request at this moment',{
+        description: 'Error Connecting to the database'
+      });
+     }
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   /**
@@ -81,8 +92,14 @@ export class UsersService {
     if (existUser) {
       throw new BadRequestException('User already exists');
     }
+    try {
     let createUser = this.usersRepository.create(createUserDto);
     createUser = await this.usersRepository.save(createUser);
     return createUser;
+    } catch (error) {
+      throw new RequestTimeoutException('Unable to process your request at this moment',{
+        description: 'Error Connecting to the database'
+      });
+     }
   }
 }
