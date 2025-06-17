@@ -12,7 +12,7 @@ import {
 import { ConfigType } from '@nestjs/config';
 import { GetUserParamDto } from '../dtos/get-user-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
-import { Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
@@ -35,6 +35,7 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+    private readonly dataSource: DataSource,
   ) {}
 
   /**
@@ -61,8 +62,8 @@ export class UsersService {
       HttpStatus.NOT_IMPLEMENTED,
       {
         cause: new Error(),
-        description: 'The Api is not implemented yet'
-      }
+        description: 'The Api is not implemented yet',
+      },
     );
   }
 
@@ -123,5 +124,40 @@ export class UsersService {
         },
       );
     }
+  }
+
+  public async createMany(createUsersDto: CreateUserDto[]) {
+    let users: User[] = [];
+    let existUser = undefined;
+    const queryRunner = this.dataSource.createQueryRunner();
+    queryRunner.connect();
+    queryRunner.startTransaction();
+    try {
+      for (const user of createUsersDto) {
+        existUser = await this.usersRepository.findOne({
+          where: { email: user.email },
+        });
+        if (existUser) {
+          queryRunner.rollbackTransaction();
+          throw new BadRequestException('User already exists');
+        }
+
+        let createUser = queryRunner.manager.create(User, user);
+        const savedUser = await queryRunner.manager.save(createUser);
+        users.push(savedUser);
+      }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new RequestTimeoutException(
+        'Unable to process your request at this moment',
+        {
+          description: 'Error Connecting to the database',
+        },
+      );
+    } finally {
+      await queryRunner.release();
+    }
+    return users;
   }
 }
