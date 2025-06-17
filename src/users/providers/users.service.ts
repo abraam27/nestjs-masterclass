@@ -1,4 +1,14 @@
-import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { GetUserParamDto } from '../dtos/get-user-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
@@ -39,18 +49,21 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
-    console.log(this.profileConfiguration.apiKey);
-    console.log(this.authServices.isAuth());
-    return [
+    throw new HttpException(
       {
-        firstName: 'Abraam',
-        email: 'abraam@gmail.com',
+        statusCode: HttpStatus.NOT_IMPLEMENTED,
+        error: 'Not implemented',
+        fileName: __filename,
+        className: this.constructor.name,
+        methodName: 'findAll',
+        line: 48,
       },
+      HttpStatus.NOT_IMPLEMENTED,
       {
-        firstName: 'Sara',
-        email: 'sara@gmail.com',
-      },
-    ];
+        cause: new Error(),
+        description: 'The Api is not implemented yet'
+      }
+    );
   }
 
   /**
@@ -59,14 +72,17 @@ export class UsersService {
    * @returns specific user
    */
   public findOneById(id: number) {
-    let user = undefined; 
+    let user = undefined;
     try {
       user = this.usersRepository.findOneBy({ id });
     } catch (error) {
-      throw new RequestTimeoutException('Unable to process your request at this moment',{
-        description: 'Error Connecting to the database'
-      });
-     }
+      throw new RequestTimeoutException(
+        'Unable to process your request at this moment',
+        {
+          description: 'Error Connecting to the database',
+        },
+      );
+    }
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -85,21 +101,27 @@ export class UsersService {
         where: { email: createUserDto.email },
       });
     } catch (error) {
-      throw new RequestTimeoutException('Unable to process your request at this moment',{
-        description: 'Error Connecting to the database'
-      });
-     }
+      throw new RequestTimeoutException(
+        'Unable to process your request at this moment',
+        {
+          description: 'Error Connecting to the database',
+        },
+      );
+    }
     if (existUser) {
       throw new BadRequestException('User already exists');
     }
     try {
-    let createUser = this.usersRepository.create(createUserDto);
-    createUser = await this.usersRepository.save(createUser);
-    return createUser;
+      let createUser = this.usersRepository.create(createUserDto);
+      createUser = await this.usersRepository.save(createUser);
+      return createUser;
     } catch (error) {
-      throw new RequestTimeoutException('Unable to process your request at this moment',{
-        description: 'Error Connecting to the database'
-      });
-     }
+      throw new RequestTimeoutException(
+        'Unable to process your request at this moment',
+        {
+          description: 'Error Connecting to the database',
+        },
+      );
+    }
   }
 }
