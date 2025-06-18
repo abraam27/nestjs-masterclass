@@ -7,6 +7,7 @@ import { User } from './user.entity';
 import { ConfigModule } from '@nestjs/config';
 import profileConfig from './config/profile.config';
 import { UsersCreateManyService } from './providers/users-create-many.service.service';
+import { PaginationModule } from 'src/common/pagination/pagination.module';
 
 @Module({
   controllers: [UsersController],
@@ -16,6 +17,7 @@ import { UsersCreateManyService } from './providers/users-create-many.service.se
     forwardRef(() => AuthModule),
     TypeOrmModule.forFeature([User]),
     ConfigModule.forFeature(profileConfig),
+    PaginationModule
   ],
 })
 export class UsersModule {}

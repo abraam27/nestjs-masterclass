@@ -19,6 +19,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import profileConfig from '../config/profile.config';
 import { CreateManyUserDto } from '../dtos/create-many-users.dto';
 import { UsersCreateManyService } from './users-create-many.service.service';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination-provider';
 
 /**
  * Users service
@@ -36,6 +37,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly usersCreateManyService: UsersCreateManyService,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
@@ -45,25 +47,17 @@ export class UsersService {
    * @param page
    * @returns array of registered users or a specific user
    */
-  public findAll(
+  public async findAll(
     getUserParamDto: GetUserParamDto,
     limit: number,
     page: number,
   ) {
-    throw new HttpException(
+    return await this.paginationProvider.paginateQuery(
       {
-        statusCode: HttpStatus.NOT_IMPLEMENTED,
-        error: 'Not implemented',
-        fileName: __filename,
-        className: this.constructor.name,
-        methodName: 'findAll',
-        line: 48,
+        limit,
+        page,
       },
-      HttpStatus.NOT_IMPLEMENTED,
-      {
-        cause: new Error(),
-        description: 'The Api is not implemented yet',
-      },
+      this.usersRepository,
     );
   }
 
