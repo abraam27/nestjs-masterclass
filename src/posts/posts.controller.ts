@@ -19,7 +19,6 @@ export class PostsController {
   })
   @Get('/:userId?')
   allPosts(@Param('userId') userId: string, @Query() query: GetPostsDto) {
-    console.log(query);
     return this.postsService.findAll(query);
   }
 
