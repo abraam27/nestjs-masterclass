@@ -13,6 +13,7 @@ import { Post } from '../post.entity';
 import { MetaOption } from 'src/meta-options/meta-options.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { NotFoundError } from 'rxjs';
+import { GetPostsDto } from '../dtos/get-posts.dto';
 
 @Injectable()
 export class PostsService {
@@ -25,9 +26,10 @@ export class PostsService {
     private readonly tagsService: TagsService,
   ) {}
 
-  public findAll() {
+  public findAll(query: GetPostsDto) {
     return this.postsRepository.find({
-      relations: ['author', 'tags', 'metaOptions'],
+      skip: (query.page - 1) * query.limit,
+      take: query.limit,
     });
   }
 
@@ -35,10 +37,19 @@ export class PostsService {
     const tags = await this.tagsService.findOneByMultipleIds(
       createPostDto.tags,
     );
+
     const user = await this.usersService.findOneById(createPostDto.authorId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    const existPost = await this.postsRepository.findOneBy({
+      slug: createPostDto.slug,
+    });
+
+    if(existPost){
+      throw new BadRequestException('slug is unique plz change it')
+    }
+
     let post = this.postsRepository.create({
       ...createPostDto,
       author: user,

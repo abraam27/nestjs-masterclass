@@ -3,15 +3,24 @@ import { PostsService } from './providers/posts.service';
 import { Body, Controller, Get, Param, Post, Patch, Delete, ParseIntPipe, Query } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
+import { GetPostsDto } from './dtos/get-posts.dto';
 
 @Controller('posts')
 @ApiTags('Posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @ApiOperation({
+    summary: 'Get all posts',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The posts have been successfully retrieved.',
+  })
   @Get('/:userId?')
-  allPosts(@Param('userId') userId: string) {
-    return this.postsService.findAll();
+  allPosts(@Param('userId') userId: string, @Query() query: GetPostsDto) {
+    console.log(query);
+    return this.postsService.findAll(query);
   }
 
   @ApiOperation({
