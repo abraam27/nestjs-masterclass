@@ -12,7 +12,6 @@ export class FindOneUserByEmailProvider {
 
     public async findOneByEmail(email: string) {
         let user = undefined;
-        console.log(email);
         try {
             user = await this.usersRepository.findOneBy({ email });
         } catch (error) {
@@ -26,7 +25,6 @@ export class FindOneUserByEmailProvider {
         if (!user) {
             throw new NotFoundException('User not found');
         }
-        console.log(user);
         return user;
     }
 }

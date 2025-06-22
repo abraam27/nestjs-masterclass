@@ -1,22 +1,13 @@
 import {
-  BadRequestException,
-  forwardRef,
-  HttpCode,
-  HttpException,
-  HttpStatus,
-  Inject,
   Injectable,
   NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
 import { GetUserParamDto } from '../dtos/get-user-param.dto';
-import { AuthService } from 'src/auth/providers/auth.service';
-import { DataSource, In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import profileConfig from '../config/profile.config';
+import { CreateUserDto } from '../dtos/create-user.dto'
 import { CreateManyUserDto } from '../dtos/create-many-users.dto';
 import { UsersCreateManyService } from './users-create-many.service.service';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination-provider';
@@ -34,8 +25,6 @@ export class UsersService {
    * @param authServices
    */
   constructor(
-    @Inject(forwardRef(() => AuthService))
-    private readonly authServices: AuthService,
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly usersCreateManyService: UsersCreateManyService,
@@ -94,8 +83,7 @@ export class UsersService {
    * @returns specific user
    */
   public async findOneByEmail(email: string) {
-    console.log(email, this.findOneUserByEmailProvider);
-    return await this.findOneUserByEmailProvider.findOneByEmail(email); 
+    return await this.findOneUserByEmailProvider.findOneByEmail(email);
   }
 
   /**
