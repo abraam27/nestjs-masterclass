@@ -1,6 +1,16 @@
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { PostsService } from './providers/posts.service';
-import { Body, Controller, Get, Param, Post, Patch, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Patch,
+  Delete,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';

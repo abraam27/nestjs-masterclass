@@ -27,14 +27,17 @@ export class PostsService {
     private readonly metaOptionsRepository: Repository<MetaOption>,
     private readonly tagsService: TagsService,
 
-    private readonly  paginationProvider: PaginationProvider,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   public findAll(query: GetPostsDto): Promise<Paginated<Post>> {
-    return this.paginationProvider.paginateQuery({
-      limit: query.limit,
-      page: query.page,
-    }, this.postsRepository);
+    return this.paginationProvider.paginateQuery(
+      {
+        limit: query.limit,
+        page: query.page,
+      },
+      this.postsRepository,
+    );
   }
 
   public async createPost(createPostDto: CreatePostDto) {
@@ -50,8 +53,8 @@ export class PostsService {
       slug: createPostDto.slug,
     });
 
-    if(existPost){
-      throw new BadRequestException('slug is unique plz change it')
+    if (existPost) {
+      throw new BadRequestException('slug is unique plz change it');
     }
 
     let post = this.postsRepository.create({

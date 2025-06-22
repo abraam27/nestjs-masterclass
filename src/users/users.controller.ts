@@ -32,10 +32,10 @@ export class UsersController {
 
   /**
    * Returns an array of registered users or a specific user
-   * @param getUserParamDto 
-   * @param limit 
-   * @param page 
-   * @returns 
+   * @param getUserParamDto
+   * @param limit
+   * @param page
+   * @returns
    */
   @Get('/:id?')
   @ApiOperation({
@@ -69,7 +69,7 @@ export class UsersController {
 
   /**
    * Creates a new user
-   * @param createUserDto 
+   * @param createUserDto
    * @returns created user
    */
   @Post()
@@ -79,18 +79,18 @@ export class UsersController {
 
   /**
    * Creates multiple users
-   * @param createUserDto 
+   * @param createUserDto
    * @returns created users
    */
-  @Post('create-many') 
+  @Post('create-many')
   public createManyUsers(@Body() createManyUserDto: CreateManyUserDto) {
-    return this.usersService.createMany(createManyUserDto); 
+    return this.usersService.createMany(createManyUserDto);
   }
 
   /**
    * Updates a user
-   * @param patchUserDto 
-   * @returns 
+   * @param patchUserDto
+   * @returns
    */
   @Patch()
   public patchUser(@Body() patchUserDto: PatchUserDto) {

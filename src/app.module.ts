@@ -22,7 +22,7 @@ const env = process.env.NODE_ENV;
       isGlobal: true,
       envFilePath: !env ? `.env` : `.env.${env}`,
       load: [appConfig, databaseConfig],
-      validationSchema: envValidation
+      validationSchema: envValidation,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
