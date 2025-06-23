@@ -5,7 +5,7 @@ import { ConfigType } from '@nestjs/config';
 import { Inject } from '@nestjs/common';
 import { UnauthorizedException } from '@nestjs/common';
 import jwtConfig from 'src/auth/config/jwt.config';
-import { REFRESH_USER_KEY } from 'src/auth/constants/auth.constants';
+import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
@@ -25,7 +25,8 @@ export class AccessTokenGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.jwtConfigration.secret,
       });
-      request[REFRESH_USER_KEY] = payload;
+      console.log(payload)
+      request[REQUEST_USER_KEY] = payload;
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }

@@ -10,10 +10,13 @@ import {
   Delete,
   ParseIntPipe,
   Query,
+  Req,
 } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
+import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
+import { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -40,8 +43,8 @@ export class PostsController {
     description: 'The post has been successfully created.',
   })
   @Post()
-  createPost(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.createPost(createPostDto);
+  createPost(@Body() createPostDto: CreatePostDto, @ActiveUser('sub') user: ActiveUserData) {
+    return this.postsService.createPost(createPostDto, user.sub);
   }
 
   @ApiOperation({

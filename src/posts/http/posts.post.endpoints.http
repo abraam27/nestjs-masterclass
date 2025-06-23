@@ -1,5 +1,6 @@
 POST http://localhost:3000/posts 
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWJyYWFtQGVtYWQuY29tIiwiaWF0IjoxNzUwNjc1ODgzLCJleHAiOjE3NTA2Nzk0ODMsImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.aPS67lOt6E6b-p66nVrRPY-k5gnL61a2tp1VfaeR_9Q
 
 {
     "title": "test title 12",

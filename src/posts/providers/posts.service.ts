@@ -16,16 +16,15 @@ import { NotFoundError } from 'rxjs';
 import { GetPostsDto } from '../dtos/get-posts.dto';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination-provider';
 import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
+import { CreatePostProvider } from './create-post.provider';
 
 @Injectable()
 export class PostsService {
   constructor(
-    private readonly usersService: UsersService,
     @InjectRepository(Post)
     private readonly postsRepository: Repository<Post>,
-    @InjectRepository(MetaOption)
-    private readonly metaOptionsRepository: Repository<MetaOption>,
     private readonly tagsService: TagsService,
+    private readonly createPostProvider: CreatePostProvider,
 
     private readonly paginationProvider: PaginationProvider,
   ) {}
@@ -40,29 +39,8 @@ export class PostsService {
     );
   }
 
-  public async createPost(createPostDto: CreatePostDto) {
-    const tags = await this.tagsService.findOneByMultipleIds(
-      createPostDto.tags,
-    );
-
-    const user = await this.usersService.findOneById(createPostDto.authorId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    const existPost = await this.postsRepository.findOneBy({
-      slug: createPostDto.slug,
-    });
-
-    if (existPost) {
-      throw new BadRequestException('slug is unique plz change it');
-    }
-
-    let post = this.postsRepository.create({
-      ...createPostDto,
-      author: user,
-      tags,
-    });
-    return await this.postsRepository.save(post);
+  public async createPost(createPostDto: CreatePostDto, authorId: number) {
+    return this.createPostProvider.createPost(createPostDto, authorId);
   }
 
   public async patchPost(patchPostDto: PatchPostDto) {
