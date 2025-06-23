@@ -17,7 +17,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, UsersCreateManyService, CreateUserProvider, FindOneUserByEmailProvider, { provide: APP_GUARD, useClass: AccessTokenGuard }],
+  providers: [UsersService, UsersCreateManyService, CreateUserProvider, FindOneUserByEmailProvider, { provide: APP_GUARD, useClass: AccessTokenGuard }, AccessTokenGuard],
   exports: [UsersService, FindOneUserByEmailProvider],
   imports: [
     forwardRef(() => AuthModule),
