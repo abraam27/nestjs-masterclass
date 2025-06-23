@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { RequestTimeoutException } from '@nestjs/common';
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../user.entity';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
 
@@ -12,14 +16,11 @@ export class CreateUserProvider {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-    private readonly hashProvider: HashingProvider,
+
+    @Inject(forwardRef(() => HashingProvider))
+    private readonly hashingProvider: HashingProvider,
   ) {}
 
-  /**
-   * Creates a new user
-   * @param createUserDto
-   * @returns created user
-   */
   public async createUser(createUserDto: CreateUserDto) {
     let existUser = undefined;
     try {
@@ -40,11 +41,15 @@ export class CreateUserProvider {
     try {
       let createUser = this.usersRepository.create({
         ...createUserDto,
-        password: await this.hashProvider.hashPassword(createUserDto.password),
+        password: await this.hashingProvider.hashPassword(
+          createUserDto.password,
+        ),
       });
+      console.log(createUser);
       createUser = await this.usersRepository.save(createUser);
       return createUser;
     } catch (error) {
+      console.log(error);
       throw new RequestTimeoutException(
         'Unable to process your request at this moment',
         {
