@@ -12,9 +12,6 @@ import { CreateUserProvider } from './providers/create-user.provider';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email';
 import jwtConfig from 'src/auth/config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
-import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
-import { APP_GUARD } from '@nestjs/core';
-
 @Module({
   controllers: [UsersController],
   providers: [
@@ -22,8 +19,6 @@ import { APP_GUARD } from '@nestjs/core';
     UsersCreateManyService,
     CreateUserProvider,
     FindOneUserByEmailProvider,
-    { provide: APP_GUARD, useClass: AccessTokenGuard },
-    AccessTokenGuard,
   ],
   exports: [UsersService, FindOneUserByEmailProvider],
   imports: [
