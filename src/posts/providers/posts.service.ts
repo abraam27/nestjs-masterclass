@@ -40,7 +40,7 @@ export class PostsService {
   }
 
   public async createPost(createPostDto: CreatePostDto, authorId: number) {
-    return this.createPostProvider.createPost(createPostDto, authorId);
+    return await this.createPostProvider.createPost(createPostDto, authorId);
   }
 
   public async patchPost(patchPostDto: PatchPostDto) {

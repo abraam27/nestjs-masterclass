@@ -28,7 +28,7 @@ export class CreatePostProvider {
             }
 
             const tags = await this.tagsService.findOneByMultipleIds(createPostDto.tags);
-            if (!tags || tags.length === 0) {
+            if (!tags || tags.length === 0 || tags.length !== createPostDto.tags.length) {
                 throw new NotFoundException('No valid tags found');
             }
 
