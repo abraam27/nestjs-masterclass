@@ -4,9 +4,7 @@ import { SignInProvider } from './sign-in.provider';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly signInProvider: SignInProvider,
-    ) { }
+  constructor(private readonly signInProvider: SignInProvider) {}
 
   public async signIn(signInDto: SignInDto) {
     return await this.signInProvider.signIn(signInDto);

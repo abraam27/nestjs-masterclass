@@ -7,7 +7,7 @@ import { GetUserParamDto } from '../dtos/get-user-param.dto';
 import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from '../dtos/create-user.dto'
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { CreateManyUserDto } from '../dtos/create-many-users.dto';
 import { UsersCreateManyService } from './users-create-many.service.service';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination-provider';
