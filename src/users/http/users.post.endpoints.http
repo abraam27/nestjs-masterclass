@@ -10,12 +10,13 @@ Content-Type: application/json
 
 POST http://localhost:3000/users/create-many
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWJyYWFtQGVtYWQuY29tIiwiaWF0IjoxNzUwNjY3NzYyLCJleHAiOjE3NTA2NzEzNjIsImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.leKuiGEFo8mSz8amfozFuDQI9WUJ-9GZIvkX75dDAvw
 {
     "users": [
         {
             "firstName": "Abraam 3",
             "lastName": "Emad 3",
+            "email": "abraam3@emad.com",
             "password": "Password123#"
         },
         {

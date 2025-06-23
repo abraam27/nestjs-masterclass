@@ -22,28 +22,36 @@ export class UsersCreateManyService {
       await queryRunner.startTransaction();
 
       for (const user of createManyUserDto.users) {
-        const existUser = await this.usersRepository.findBy({
-          email: user.email,
+        const existUser = await this.usersRepository.findOne({
+          where: {
+            email: user.email,
+          },
         });
         if (existUser) {
-          await queryRunner.rollbackTransaction();
           throw new BadRequestException('User already exists');
         }
-        let createUser = queryRunner.manager.create(User, user);
+        const createUser = queryRunner.manager.create(User, user);
         const savedUser = await queryRunner.manager.save(createUser);
         users.push(savedUser);
       }
       await queryRunner.commitTransaction();
     } catch (error) {
-      await queryRunner.rollbackTransaction();
+      if (queryRunner && queryRunner.isTransactionActive) {
+        await queryRunner.rollbackTransaction();
+      }
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       throw new RequestTimeoutException(
         'Unable to process your request at this moment',
         {
-          description: 'Error Connecting to the database',
+          description: error.message || 'Error creating users',
         },
       );
     } finally {
-      await queryRunner.release();
+      if (queryRunner) {
+        await queryRunner.release();
+      }
     }
     return users;
   }

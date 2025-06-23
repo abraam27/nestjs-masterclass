@@ -1,0 +1,1 @@
+export const REFRESH_USER_KEY = 'user';
