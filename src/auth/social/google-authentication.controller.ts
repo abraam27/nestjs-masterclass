@@ -7,12 +7,12 @@ import { AuthType } from '../enums/auth-type.enum';
 @Auth(AuthType.None)
 @Controller('auth/google-authentication')
 export class GoogleAuthenticationController {
-    constructor(
-        private readonly googleAuthenticationService: GoogleAuthenticationService,
-    ) { }
+  constructor(
+    private readonly googleAuthenticationService: GoogleAuthenticationService,
+  ) {}
 
-    @Post()
-    public authanticatte(@Body() googleTokenDto: GoogleTokenDto) {
-        return this.googleAuthenticationService.authenticate(googleTokenDto);
-    }
+  @Post()
+  public authanticatte(@Body() googleTokenDto: GoogleTokenDto) {
+    return this.googleAuthenticationService.authenticate(googleTokenDto);
+  }
 }

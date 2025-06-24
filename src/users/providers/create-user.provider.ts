@@ -45,7 +45,6 @@ export class CreateUserProvider {
           createUserDto.password,
         ),
       });
-      console.log(createUser);
       createUser = await this.usersRepository.save(createUser);
       return createUser;
     } catch (error) {

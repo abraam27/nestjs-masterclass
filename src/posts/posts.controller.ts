@@ -43,7 +43,10 @@ export class PostsController {
     description: 'The post has been successfully created.',
   })
   @Post()
-  createPost(@Body() createPostDto: CreatePostDto, @ActiveUser('sub') user: ActiveUserData) {
+  createPost(
+    @Body() createPostDto: CreatePostDto,
+    @ActiveUser('sub') user: ActiveUserData,
+  ) {
     return this.postsService.createPost(createPostDto, user.sub);
   }
 

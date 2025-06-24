@@ -3,17 +3,13 @@ import {
   Get,
   Post,
   Patch,
-  Put,
-  Delete,
   Param,
   Query,
   Body,
-  Ip,
-  Headers,
   ParseIntPipe,
   DefaultValuePipe,
-  ValidationPipe,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamDto } from './dtos/get-user-param.dto';
@@ -24,6 +20,7 @@ import { CreateManyUserDto } from './dtos/create-many-users.dto';
 import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { AuthType } from 'src/auth/enums/auth-type.enum';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 
 /**
  * Users controller
@@ -78,6 +75,7 @@ export class UsersController {
    */
   @Post()
   @Auth(AuthType.None)
+  @UseInterceptors(ClassSerializerInterceptor)
   public createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }

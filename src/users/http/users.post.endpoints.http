@@ -2,9 +2,9 @@ POST http://localhost:3000/users
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWJyYWFtQGVtYWQuY29tIiwiaWF0IjoxNzUwNjc1ODgzLCJleHAiOjE3NTA2Nzk0ODMsImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.aPS67lOt6E6b-p66nVrRPY-k5gnL61a2tp1VfaeR_9Q
 {
-    "firstName": "Abraam",
-    "lastName": "Emad",
-    "email": "abraam5@emad.com",
+    "firstName": "Abraam 8",
+    "lastName": "Emad 8",
+    "email": "abraam8@emad.com",
     "password": "Password123#"
 }
 

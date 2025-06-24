@@ -7,31 +7,38 @@ import { ActiveUserData } from '../interfaces/active-user-data.interface';
 
 @Injectable()
 export class GenerateTokensProvider {
-    constructor(
-        private readonly jwtService: JwtService,
-        @Inject(jwtConfig.KEY)
-        private readonly jwtConfigOptions: ConfigType<typeof jwtConfig>,
-    ) { }
+  constructor(
+    private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfigOptions: ConfigType<typeof jwtConfig>,
+  ) {}
 
-    public async signToken<T>(userId: number, expiresIn: number, payload?: T) {
-        return await this.jwtService.signAsync({
-            sub: userId,
-            ...payload,
-        }, {
-            audience: this.jwtConfigOptions.audience,
-            issuer: this.jwtConfigOptions.issuer,
-            secret: this.jwtConfigOptions.secret,
-            expiresIn,
-        });
-    }
+  public async signToken<T>(userId: number, expiresIn: number, payload?: T) {
+    return await this.jwtService.signAsync(
+      {
+        sub: userId,
+        ...payload,
+      },
+      {
+        audience: this.jwtConfigOptions.audience,
+        issuer: this.jwtConfigOptions.issuer,
+        secret: this.jwtConfigOptions.secret,
+        expiresIn,
+      },
+    );
+  }
 
-    public async generateTokens(user: User) {
-        const [accessToken, refreshToken] = await Promise.all([
-            this.signToken<Partial<ActiveUserData>>(user.id, this.jwtConfigOptions.accessTokenTtl, {
-                email: user.email,
-            }),
-            this.signToken(user.id, this.jwtConfigOptions.refreshTokenTtl),
-        ]);
-        return { accessToken, refreshToken };
-    }
+  public async generateTokens(user: User) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken<Partial<ActiveUserData>>(
+        user.id,
+        this.jwtConfigOptions.accessTokenTtl,
+        {
+          email: user.email,
+        },
+      ),
+      this.signToken(user.id, this.jwtConfigOptions.refreshTokenTtl),
+    ]);
+    return { accessToken, refreshToken };
+  }
 }
