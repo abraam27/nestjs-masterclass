@@ -13,7 +13,9 @@ import { UsersCreateManyService } from './users-create-many.service.service';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination-provider';
 import { CreateUserProvider } from './create-user.provider';
 import { FindOneUserByEmailProvider } from './find-one-user-by-email';
-
+import { FindOneByGoogleIdProvider } from './find-one-by-google-id.provider';
+import { CreateGoogleUserProvider } from './create-google-user.provider';
+import { GoogleUser } from '../interfaces/google-user.interface';
 /**
  * Users service
  * Handles all user related operations
@@ -31,6 +33,8 @@ export class UsersService {
     private readonly paginationProvider: PaginationProvider,
     private readonly createUserProvider: CreateUserProvider,
     private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
+    private readonly findOneByGoogleIdProvider: FindOneByGoogleIdProvider,
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
 
   /**
@@ -87,6 +91,15 @@ export class UsersService {
   }
 
   /**
+   * Returns a specific user
+   * @param googleId
+   * @returns specific user
+   */
+  public async findOneByGoogleId(googleId: string) {
+    return await this.findOneByGoogleIdProvider.findOneByGoogleId(googleId);
+  }
+
+  /**
    * Creates a new user
    * @param createUserDto
    * @returns created user
@@ -95,6 +108,20 @@ export class UsersService {
     return await this.createUserProvider.createUser(createUserDto);
   }
 
+  /**
+   * Creates a new user
+   * @param googleUser
+   * @returns created user
+   */
+  public async createGoogleUser(googleUser: GoogleUser) {
+    return await this.createGoogleUserProvider.createGoogleUser(googleUser);
+  }
+
+  /**
+   * Creates multiple users
+   * @param createManyUserDto
+   * @returns created users
+   */
   public async createMany(createManyUserDto: CreateManyUserDto) {
     return await this.usersCreateManyService.createMany(createManyUserDto);
   }

@@ -22,4 +22,6 @@ export default joi.object({
   JWT_TOKEN_ISSUER: joi.string().required(),
   JWT_ACCESS_TOKEN_TTL: joi.number().default(3600),
   JWT_REFRESH_TOKEN_TTL: joi.number().default(86400),
+  GOOGLE_CLIENT_ID: joi.string().required(),
+  GOOGLE_CLIENT_SECRET: joi.string().required(),
 });

@@ -1,8 +1,8 @@
 import {
   IsEmail,
+  IsString,
   IsNotEmpty,
   IsOptional,
-  IsString,
   Matches,
   MaxLength,
   MinLength,
@@ -26,7 +26,7 @@ export class CreateUserDto {
   @MaxLength(20)
   email: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MinLength(8)
   @MaxLength(256)
@@ -34,5 +34,5 @@ export class CreateUserDto {
     message:
       'Minimum eight characters, at least one letter, one number and one special character',
   })
-  password: string;
+  password?: string;
 }
