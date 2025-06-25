@@ -19,6 +19,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { DataResponseInterceptor } from './common/interceptors/data-response.interceptor';
 import { UploadsModule } from './uploads/uploads.module';
+import { MailModule } from './mail/mail.module';
 const env = process.env.NODE_ENV;
 @Module({
   imports: [
@@ -51,6 +52,7 @@ const env = process.env.NODE_ENV;
     MetaOptionsModule,
     PaginationModule,
     UploadsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [

@@ -46,6 +46,6 @@ async function bootstrap() {
   app.enableCors();
 
   //use global interceptors
-  await app.listen(3000);
+  await app.listen(3500);
 }
 bootstrap();

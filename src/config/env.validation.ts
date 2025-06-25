@@ -25,4 +25,13 @@ export default joi.object({
   GOOGLE_CLIENT_ID: joi.string().required(),
   GOOGLE_CLIENT_SECRET: joi.string().required(),
   API_VERSION: joi.string().default('0.1.1'),
+  AWS_PUBLIC_BUCKET_NAME: joi.string().required(),
+  AWS_REGION: joi.string().required(),
+  AWS_CLOUDFRONT_URL: joi.string().required(),
+  AWS_ACCESS_KEY_ID: joi.string().required(),
+  AWS_SECRET_ACCESS_KEY: joi.string().required(),
+  MAIL_HOST: joi.string().required(),
+  MAIL_PORT: joi.number().required(),
+  SMTP_USERNAME: joi.string().required(),
+  SMTP_PASSWORD: joi.string().required(),
 });
